@@ -5,15 +5,15 @@
 # @Blog     : http://www.pr1s0n.com
 # 函数的嵌套
 
-def max2(x,y):
-    if x > y:
-        return x
-    else:
-        return y
-def max4(a,b,c,d):
-    res1 = max2(a,b)
-    res2 = max2(res1,c)
-    res3 = max2(res2,d)
-    return res3
-res = max4(1,2,3,4)
-print(res)
+# def max2(x,y):
+#     if x > y:
+#         return x
+#     else:
+#         return y
+# def max4(a,b,c,d):
+#     res1 = max2(a,b)
+#     res2 = max2(res1,c)
+#     res3 = max2(res2,d)
+#     return res3
+# res = max4(1,2,3,4)
+# print(res)
