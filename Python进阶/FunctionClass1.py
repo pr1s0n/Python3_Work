@@ -1,3 +1,9 @@
+# -*-coding:utf-8 -*-
+# @Author   ：pr1s0n
+# @Time     : 2020/4/16 20:32
+# @FileNAme : functionClass1.py
+# @Blog     : http://www.pr1s0n.com
+
 def login():
     print('login')
 def register():
