@@ -52,4 +52,3 @@ def f():
     print("****self****")
 f()
 # f()相当于 war1(war2(f))()
-
