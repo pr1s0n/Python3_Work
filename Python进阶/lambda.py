@@ -21,7 +21,7 @@ res = max(count,key=lambda k:count[k])
 # 同理sorted()同样适用
 print(res)
 '''
-
+''':arg'''
 
 # map函数
 l = ['lichang','song','xue','wang']
