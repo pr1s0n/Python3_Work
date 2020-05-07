@@ -18,7 +18,6 @@ count = {
 #     return count[k]
 '''
 res = max(count,key=lambda k:count[k])
-
 # 同理sorted()同样适用
 print(res)
 '''
@@ -28,3 +27,4 @@ print(res)
 l = ['lichang','song','xue','wang']
 res = map(lambda name:name+'_nice',l)
 print(res.__next__())
+
