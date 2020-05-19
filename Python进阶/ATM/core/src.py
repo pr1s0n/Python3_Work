@@ -5,7 +5,8 @@
 # @Blog     : http://www.pr1s0n.com
 
 from interface import user_interface
-
+from lib import common
+login_user = None
 #
 # 1. 注册功能
 def register():
@@ -31,37 +32,54 @@ def login():
         flag,msg = user_interface.login_interface(
             username,password
         )
+
         if flag:
             print(msg)
+            global login_user
+            login_user = username
             break
         else:
             print(msg)
 
 # 3. 查看余额
+@common.login_auth
 def check_balance():
     pass
 # 4. 提现功能
+@common.login_auth
 def withdraw():
     pass
+
 # 5. 还款功能
+@common.login_auth
 def repay():
     pass
+
 # 6. 转账功能
+@common.login_auth
 def transfer():
     pass
 
 # 7. 查看流水
+@common.login_auth
 def check_flow():
     pass
+
 # 8. 购物功能
+@common.login_auth
 def shopping():
     pass
+
 # 9. 查看购物车
+@common.login_auth
 def check_shop_car():
     pass
+
 # 10.管理员功能
+@common.login_auth
 def admin():
     pass
+
 
 # 创建函数功能字典
 func_dic = {
@@ -99,6 +117,8 @@ def run():
             print('请输入正确的编号！')
             continue
         func_dic.get(choice)()
+
+
 
 
 
