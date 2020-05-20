@@ -10,15 +10,13 @@ def register_interface(username,password,balance=15000):
     user_dic = {
         'username': username,
         'password': password,
-        'banlance': balance,
+        'balance': balance,
         'flow': [],
         'shop_car':{},
         'locked':False
     }
     db_handler.save(user_dic)
     return True, f'{username} 注册成功！'
-
-
 
 def login_interface(username,password):
     # 1. 判断用户是否存在
@@ -33,5 +31,6 @@ def login_interface(username,password):
 
     return False,'用户不存在，请重新输入！'
 
-
-
+def check_bal_interface(username):
+    user_dic = db_handler.select(username)
+    return user_dic['balance']
