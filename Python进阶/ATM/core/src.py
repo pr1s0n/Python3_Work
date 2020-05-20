@@ -6,6 +6,7 @@
 
 from interface import user_interface
 from lib import common
+from interface import bank_interface
 login_user = None
 #
 # 1. 注册功能
@@ -44,11 +45,33 @@ def login():
 # 3. 查看余额
 @common.login_auth
 def check_balance():
-    pass
+    balance = user_interface.check_bal_interface(
+        login_user
+    )
+    print(f'用户{login_user} 账户余额为 {balance}')
+
+
+
 # 4. 提现功能
 @common.login_auth
 def withdraw():
-    pass
+    while True:
+        input_money = input('请输入提现金额：').strip()
+
+        if not input_money.isdigit():
+            print('必须输入数值！')
+            continue
+        input_money = int(input_money)
+        flag,msg = bank_interface.withdraw_interface(
+            login_user,input_money
+        )
+        if flag:
+            print(msg)
+            break
+        else:
+            print(msg)
+
+
 
 # 5. 还款功能
 @common.login_auth
