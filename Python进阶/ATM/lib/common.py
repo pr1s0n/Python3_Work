@@ -26,5 +26,15 @@ def login_auth(func):
         else:
             print('用户还没有登录喔！')
             src.login()
-            
+    return inner
+
+def login_admin(func):
+    from core import admin
+    def inner(*args,**kwargs):
+        if admin.admin_key:
+            res = func(*args,**kwargs)
+            return res
+        else:
+            print('用户还没有登录喔！')
+            admin.admin_login()
     return inner
