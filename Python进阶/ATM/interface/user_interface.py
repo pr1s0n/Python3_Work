@@ -23,14 +23,39 @@ def login_interface(username,password):
     user_dic = db_handler.select(username)
 
     if user_dic:
-        password = common.get_pwd_md5(password)
-        if password == user_dic.get('password'):
-            return True,f'用户[{username}]登录成功！'
+        if user_dic['locked'] == False:
+            password = common.get_pwd_md5(password)
+            if password == user_dic.get('password'):
+                return True,f'用户[{username}]登录成功！'
+            else:
+                return False,'用户名或密码错误！'
         else:
-            return False,'用户名或密码错误！'
+            return False,'该用户已锁定，请联系管理员！'
+    return False,'用户不存在，请重新输入！'
 
+def admin_login_interface(username,password):
+    user_dic = db_handler.select(username)
+    try:
+        if user_dic:
+            password = common.get_pwd_md5(password)
+            if user_dic['is_admin']:
+                if password == user_dic.get('password'):
+                    return True, f'管理员[{username}]登录成功！'
+                else:
+                    return False, '用户名或密码错误！'
+    except KeyError:
+        return False, '该用户不是管理员！请重新输入'
     return False,'用户不存在，请重新输入！'
 
 def check_bal_interface(username):
     user_dic = db_handler.select(username)
     return user_dic['balance']
+
+# 锁定账号
+
+def lock_users_interface(username):
+    user_dic = db_handler.select(username)
+    user_dic['locked'] = True
+    db_handler.save(user_dic)
+
+    return user_dic['locked']
