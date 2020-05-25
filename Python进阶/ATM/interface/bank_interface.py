@@ -84,3 +84,14 @@ def change_balance_interface(username,money):
     user_dic['balance'] = int(money)
     db_handler.save(user_dic)
     return user_dic.get('balance')
+
+def pay_interface(username,cost):
+    user_dic = db_handler.select(username)
+    if user_dic.get('balance') >= cost:
+        user_dic['balance'] -= cost
+        flow = f'用户消费金额：[{cost}]'
+        user_dic['flow'].append(flow)
+        db_handler.save(user_dic)
+        return True
+
+    return False
