@@ -7,6 +7,7 @@
 from interface import user_interface
 from lib import common
 from interface import bank_interface
+from interface import shop_interface
 login_user = None
 #
 # 1. 注册功能
@@ -126,17 +127,71 @@ def check_flow():
 # 8. 购物功能
 @common.login_auth
 def shopping():
-    pass
+    shop_list = [
+        ['oppo v480',3899],
+        ['vivo X200',3999],
+        ['iphone 123', 99999],
+        ['xiaomi 100',10000],
+    ]
+    shopping_car = {} # 初始化购物车,格式为{'商品名称':['单价','数量']}
+    while True:
+        for index,shop in enumerate(shop_list):
+            shop_name ,shop_price = shop
+            print(f'商品编号为：{index}',
+                  f'商品名称：{shop_name}',
+                  f'商品价格：{shop_price}'
+            )
+        choice = input('请输入商品编号：(输入y or n选择是否结账)').strip()
+        # 输入y进入支付
+        if choice == 'y':
+            if not shopping_car:
+                print('购物车是空的，请选择至少一个商品进行支付！')
+                continue
+            flag,msg = shop_interface.shopping_interface(login_user,shopping_car)
+            if flag:
+                print(msg)
+                break
+            else:
+                print(msg)
+
+        # 输入n添加商品到购物车
+        elif choice == 'n':
+            if not shopping_car:
+                print('请至少选择一个商品！')
+                continue
+            flag,msg = shop_interface.add_shop_car_interface(
+                login_user,shopping_car
+            )
+            if flag:
+                print(msg)
+                break
+
+
+        if not choice.isdigit():
+            print('请输入正确的商品编号！')
+            continue
+        choice = int(choice)
+        if choice not in range(len(shop_list)):
+            print('未找到您搜索的商品的编号，请重新输入！')
+            continue
+
+        shop_name ,shop_price = shop_list[choice]
+        if shop_name in shopping_car:
+            shopping_car[shop_name][1] += 1
+        else:
+            shopping_car[shop_name] = [shop_price,1]
+
+
+        print('当前购物车：',shopping_car)
 
 # 9. 查看购物车
 @common.login_auth
 def check_shop_car():
-    pass
+    order = shop_interface.show_shop_car_interface(login_user)
+    print(order)
 
 # 10.管理员功能
-@common.login_auth
-def admin():
-    pass
+# 另外新建了入口文件
 
 
 # 创建函数功能字典
@@ -150,7 +205,6 @@ func_dic = {
     '7': check_flow,
     '8': shopping,
     '9': check_shop_car,
-    '10':admin,
 }
 
 # 视图层主程序
@@ -167,7 +221,6 @@ def run():
             7. 查看流水
             8. 购物功能
             9. 查看购物车
-            10.管理员功能
             '''
         )
         choice = input('请输入功能编号：').strip()
