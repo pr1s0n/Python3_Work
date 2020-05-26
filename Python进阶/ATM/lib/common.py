@@ -7,7 +7,10 @@
 存放公共方法
 '''
 import hashlib
+import logging.config
+from conf import settings
 # md5加密
+
 def get_pwd_md5(password):
     md5_obj = hashlib.md5()
     md5_obj.update(password.encode('utf-8'))
@@ -38,3 +41,11 @@ def login_admin(func):
             print('用户还没有登录喔！')
             admin.admin_login()
     return inner
+
+# 添加日志功能
+def get_logger(log_type):
+    logging.config.dictConfig(
+        settings.LOGGING_DIC
+    )
+    logger = logging.getLogger(log_type)
+    return logger
