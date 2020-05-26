@@ -15,14 +15,14 @@ USER_DATA_PATH = os.path.join(
 # 定义三种日志输出格式
 standard_format = '[%(asctime)s][%(threadName)s:%(thread)d][task_id:%(name)s][%(filename)s:%(lineno)d]' \
                   '[%(levelname)s][%(message)s]'
-simple_format = '[%(levelname)s][%(asctime)s][%(filename)s:%(lineno)d]%(message)s'
+simple_format = '[%(levelname)s][%(asctime)s][%(filename)s:%(lineno)d]%(message)s' # 其中name为getlogger指定的名字
 id_simple_format = '[%(levelname)s][%(asctime)s] %(message)s'
 
 # 定义日志输出格式
 logfile_dir = os.path.join(BASE_PATH,'log')
-
+# 日志文件名
 logfile_name = 'atm.log'
-
+# b不存在则创建日志目录
 if not os.path.isdir(logfile_dir):
     os.mkdir(logfile_dir)
 
@@ -48,20 +48,21 @@ LOGGING_DIC = {
         },
         'default':{
             'level':'DEBUG',
-            'class':'logging.handlers.RotatingFileHandler',
+            'class':'logging.handlers.RotatingFileHandler', # 保存到文件
             'formatter':'standard',
-            'filename':logfile_path,
-            'maxBytes':1024 * 1024 * 5,
+            'filename':logfile_path, # 日志文件
+            'maxBytes':1024 * 1024 * 5, # 日志文件大小
             'backupCount':5,
             'encoding':'utf-8'
         },
 
     },
     'loggers':{
+        # logging.getLogger(__name__)拿到的logger配置
         '':{
-            'handlers':['default','console'],
+            'handlers':['default','console'], # 这里把上面定义的两个handler都加上，即log数据写入文件同时又打印到屏幕上
             'level':'DEBUG',
-            'propagate':True,
+            'propagate':True,# 向上(更高级别的日志)传递
         },
     },
 
