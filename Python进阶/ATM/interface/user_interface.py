@@ -5,6 +5,7 @@
 # @Blog     : http://www.pr1s0n.com
 from db import db_handler
 from lib import common
+user_logger = common.get_logger('user')
 def register_interface(username,password,balance=15000):
     password = common.get_pwd_md5(password)
     user_dic = {
@@ -16,7 +17,9 @@ def register_interface(username,password,balance=15000):
         'locked':False
     }
     db_handler.save(user_dic)
-    return True, f'{username} 注册成功！'
+    msg = f'{username} 注册成功！'
+    user_logger.info(msg)
+    return True, msg
 
 def login_interface(username,password):
     # 1. 判断用户是否存在
@@ -26,9 +29,13 @@ def login_interface(username,password):
         if user_dic['locked'] == False:
             password = common.get_pwd_md5(password)
             if password == user_dic.get('password'):
-                return True,f'用户[{username}]登录成功！'
+                msg = f'用户[{username}]登录成功！'
+                user_logger.info(msg)
+                return True,msg
             else:
-                return False,'用户名或密码错误！'
+                msg = '用户名或密码错误！'
+                user_logger.warn(msg)
+                return False,msg
         else:
             return False,'该用户已锁定，请联系管理员！'
     return False,'用户不存在，请重新输入！'
@@ -40,9 +47,13 @@ def admin_login_interface(username,password):
             password = common.get_pwd_md5(password)
             if user_dic['is_admin']:
                 if password == user_dic.get('password'):
-                    return True, f'管理员[{username}]登录成功！'
+                    msg = f'管理员[{username}]登录成功！'
+                    user_logger.info(msg)
+                    return True, msg
                 else:
-                    return False, '用户名或密码错误！'
+                    msg = '用户名或密码错误！'
+                    user_logger.warn(msg)
+                    return False, msg
     except KeyError:
         return False, '该用户不是管理员！请重新输入'
     return False,'用户不存在，请重新输入！'
